@@ -235,17 +235,25 @@ export function makePyretPane(
     function scheduleSave(currentText: string) {
       currentTextToSave = currentText;
       if (!saveTimeout) {
-        saveTimeout = setTimeout(() => {
+        saveTimeout = setTimeout(async () => {
           if (currentTextToSave !== undefined && currentTextToSave !== document.getText()) {
             const edit = new vscode.WorkspaceEdit();
             edit.replace(
               document.uri,
               new vscode.Range(0, 0, document.lineCount, 0),
               currentTextToSave);
-            vscode.workspace.applyEdit(edit);
-            lastSavedText = currentTextToSave;
-            currentTextToSave = undefined;
-            saveTimeout = false;
+            try {
+              lastSavedText = currentTextToSave;
+              currentTextToSave = undefined;
+              const success = await vscode.workspace.applyEdit(edit);
+              console.log("Applied edit: ", success);
+            }
+            catch(e) {
+              console.error("Error saving document: ", e);
+            }
+            finally {
+              saveTimeout = false;
+            }
           }
         }, DEBOUNCE_MS);
       }
