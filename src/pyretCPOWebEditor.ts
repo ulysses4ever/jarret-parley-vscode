@@ -227,8 +227,36 @@ export function makePyretPane(
     // Remember that a single text document can also be shared between multiple custom
     // editors (this happens for example when you split a custom editor)
 
+    let currentTextToSave : string | undefined = undefined;
+    let lastSavedText : string | undefined = undefined;
+    let saveTimeout: NodeJS.Timeout | false = false;
+    const DEBOUNCE_MS = 500;
+
+    function scheduleSave(currentText: string) {
+      currentTextToSave = currentText;
+      if (!saveTimeout) {
+        saveTimeout = setTimeout(() => {
+          if (currentTextToSave !== undefined && currentTextToSave !== document.getText()) {
+            const edit = new vscode.WorkspaceEdit();
+            edit.replace(
+              document.uri,
+              new vscode.Range(0, 0, document.lineCount, 0),
+              currentTextToSave);
+            vscode.workspace.applyEdit(edit);
+            lastSavedText = currentTextToSave;
+            currentTextToSave = undefined;
+            saveTimeout = false;
+          }
+        }, DEBOUNCE_MS);
+      }
+    }
+
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
-      if (e.document.uri.toString() === document.uri.toString()) {
+      console.log("Document change: ", e);
+      const contentActuallyChanged = e.contentChanges.length > 0;
+      const isOurDocument = e.document.uri.toString() === document.uri.toString();
+      const notMostRecentlySaved = document.getText() !== lastSavedText;
+      if (contentActuallyChanged && isOurDocument && notMostRecentlySaved) {
         updateWebview();
       }
     });
@@ -249,6 +277,7 @@ export function makePyretPane(
         }
       });
     }
+
 
     // Receive message from the webview.
     pane.webview.onDidReceiveMessage(async e => {
@@ -308,17 +337,7 @@ export function makePyretPane(
         }
         case 'change': {
           console.log("Got change", e);
-          const edit = new vscode.WorkspaceEdit();
-
-          // Just replace the entire document every time for this example extension.
-          // A more complete extension should compute minimal edits instead.
-          // NOTE(joe): we have these on the change events from CodeMirror
-          edit.replace(
-            document.uri,
-            new vscode.Range(0, 0, document.lineCount, 0),
-            e.state.editorContents)
-          vscode.workspace.applyEdit(edit);
-          document.save();
+          scheduleSave(e.state.editorContents);
           break;
         }
         default: console.log("Got a message: ", e);
