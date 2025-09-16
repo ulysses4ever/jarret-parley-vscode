@@ -232,6 +232,39 @@ export function makePyretPane(
     let saveTimeout: NodeJS.Timeout | false = false;
     const DEBOUNCE_MS = 500;
 
+    /**
+     * Schedule a save of the current text to the document with the given
+     * string.  If nothing is currently scheduled, schedule one in DEBOUNCE_MS
+     * milliseconds.  If something is already scheduled, update the text to be
+     * saved when the scheduled save happens.
+     *
+     * Further, we save the text that actually gets saved in lastSavedText. We
+     * use this to recognize changes that we ourselves made to the document.
+     *
+     * Per
+     * https://code.visualstudio.com/api/extension-guides/custom-editors#synchronizing-changes-with-the-textdocument,
+     * “It's important to remember that any file edits that a custom editor
+     * triggers will cause onDidChangeTextDocument to fire.”
+     *
+     * We could also do this with a flag that is updated before and after the
+     * `await applyEdit`. This seems somewhat fraught because I don't see any
+     * guarantee from VScode that the change event happens before the async
+     * operation returns and code after it runs, and I've seen enough “document
+     * updated in the meantime” errors to be suspicious of the exact timing.
+     * What's here isn't perfect either: there could be quick A-B-A edits where
+     * user edits to A in Pyret, B came from an external source, then the user
+     * edits back to A, and we ignore the edit back to A because it matches
+     * the previous save. However, that would all have to happen in 1/2 second
+     * and involve edits in CodeMirror.
+     * 
+     * In addition, we make no effort to do precise edits. We just replace the
+     * whole document with the full text every time. This is more robust – if a
+     * single precise edit is lost, the whole document can be garbled. If we
+     * update the full document each time, even if a single edit is lost (due
+     * to, say, an concurrent edit with an external editor or the A-B-A case
+     * above) the next one will pick up the changes.
+     */
+
     function scheduleSave(currentText: string) {
       currentTextToSave = currentText;
       if (!saveTimeout) {
