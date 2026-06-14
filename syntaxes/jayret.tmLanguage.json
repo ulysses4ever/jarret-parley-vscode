@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Jarret",
+  "name": "Jayret",
   "scopeName": "source.jrt",
   "fileTypes": ["jrt"],
   "patterns": [
@@ -91,7 +91,7 @@
           "name": "storage.modifier.jrt"
         },
         {
-          "comment": "Jarret expression forms",
+          "comment": "Jayret expression forms",
           "match": "\\b(block|ask|otherwise|spy)\\b",
           "name": "keyword.other.jrt"
         },

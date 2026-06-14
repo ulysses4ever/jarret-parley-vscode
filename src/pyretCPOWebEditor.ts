@@ -70,7 +70,7 @@ export class PyretCPOWebProvider implements vscode.CustomTextEditorProvider {
     return providerRegistration;
   }
 
-  private static readonly viewType = 'jarret-parley.cpo';
+  private static readonly viewType = 'jayret-parley.cpo';
 
   constructor(
     private readonly context: vscode.ExtensionContext
@@ -110,7 +110,7 @@ function getTheme(vscodeTheme: vscode.ColorThemeKind): string {
  * Get the static html used for the editor webviews.
  */
 export function getHtmlForWebview(context: vscode.ExtensionContext, webview: vscode.Webview, showDefinitions = true): string {
-  const config = vscode.workspace.getConfiguration('jarret-parley');
+  const config = vscode.workspace.getConfiguration('jayret-parley');
   const theme = getTheme(vscode.window.activeColorTheme.kind);
   let urlFileMode = config.get('urlFileMode');
   const baseURI = webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'web', 'build', 'web'));
@@ -359,7 +359,7 @@ export function makePyretPane(
       }
       let docText = document.getText();
       if(docText === "") {
-        const config = vscode.workspace.getConfiguration('jarret-parley');
+        const config = vscode.workspace.getConfiguration('jayret-parley');
         let context = config.get('defaultContext');
         docText = `use context ${context}\n\n`;
         const edit = new vscode.WorkspaceEdit();

@@ -1,47 +1,47 @@
-# jarret-parley-vscode
+# jayret-parley-vscode
 
-An interactive Visual Studio Code editor for [Jarret](https://github.com/ulysses4ever/jarret-lang),
+An interactive Visual Studio Code editor for [Jayret](https://github.com/ulysses4ever/jayret-lang),
 modeled on [jpolitz/pyret-parley-vscode](https://github.com/jpolitz/pyret-parley-vscode)
-and powered by a Jarret-flavored
-[code.pyret.org](https://github.com/ulysses4ever/code.jarret.org) build
+and powered by a Jayret-flavored
+[code.pyret.org](https://github.com/ulysses4ever/code.jayret.org) build
 embedded into a VSCode webview.
 
-Opens `.jrt` files in a custom editor that runs the full Jarret
+Opens `.jrt` files in a custom editor that runs the full Jayret
 compiler + runtime inside a webview pane, with an interactive REPL on
 the side.
 
 ## Architecture
 
-`jarret-parley-vscode` is a fork of
+`jayret-parley-vscode` is a fork of
 [jpolitz/pyret-parley-vscode](https://github.com/jpolitz/pyret-parley-vscode).
 The substantive differences:
 
-- Source extension is `.jrt` (Jarret), not `.arr` (Pyret).
+- Source extension is `.jrt` (Jayret), not `.arr` (Pyret).
 - The embedded compiler bundle comes from
-  [`ulysses4ever/code.jarret.org`](https://github.com/ulysses4ever/code.jarret.org)
+  [`ulysses4ever/code.jayret.org`](https://github.com/ulysses4ever/code.jayret.org)
   — a fork of `code.pyret.org` whose `pyret-lang` dependency is pinned
-  to our [`ulysses4ever/jarret-lang`](https://github.com/ulysses4ever/jarret-lang)
-  fork. That bundle includes the Jarret translator, so loading a `.jrt`
+  to our [`ulysses4ever/jayret-lang`](https://github.com/ulysses4ever/jayret-lang)
+  fork. That bundle includes the Jayret translator, so loading a `.jrt`
   source in the webview routes through `parse-java` rather than
   `parse-pyret`.
 - VSCode command IDs and configuration keys are namespaced
-  `jarret-parley.*`.
+  `jayret-parley.*`.
 
 ## Building
 
-You need a built copy of `code.jarret.org` on disk. The expected
+You need a built copy of `code.jayret.org` on disk. The expected
 sibling layout:
 
 ```
 ~/Dev/pyret/
-    code.jarret.org/        # cloned + `make web-local`
-    jarret-parley-vscode/   # this repo, with build/ symlinked to ../code.jarret.org/build
+    code.jayret.org/        # cloned + `make web-local`
+    jayret-parley-vscode/   # this repo, with build/ symlinked to ../code.jayret.org/build
 ```
 
 Set up the symlink and compile:
 
 ```
-ln -s ../code.jarret.org/build build
+ln -s ../code.jayret.org/build build
 npm install
 npm run compile
 ```
@@ -63,15 +63,15 @@ npx vscode-test-web --browserType=chromium --extensionDevelopmentPath . ./sample
 
 ## Settings
 
-- `jarret-parley.defaultContext` — starter context (e.g. `starter2024`).
-- `jarret-parley.urlFileMode` — how to resolve `url-file()` imports.
+- `jayret-parley.defaultContext` — starter context (e.g. `starter2024`).
+- `jayret-parley.urlFileMode` — how to resolve `url-file()` imports.
 
 ## Issues
 
-Jarret-language issues belong in
-[ulysses4ever/jarret-lang](https://github.com/ulysses4ever/jarret-lang/issues).
+Jayret-language issues belong in
+[ulysses4ever/jayret-lang](https://github.com/ulysses4ever/jayret-lang/issues).
 Extension-specific issues go to
-[ulysses4ever/jarret-parley-vscode](https://github.com/ulysses4ever/jarret-parley-vscode/issues).
+[ulysses4ever/jayret-parley-vscode](https://github.com/ulysses4ever/jayret-parley-vscode/issues).
 
 ## License
 
