@@ -1,0 +1,21 @@
+jayret-parley-vscode
+Copyright 2024-2025 Jayret contributors
+
+This product includes software originally developed by
+Joe Politz with grammar/language-configuration by Seth Poulsen
+as part of pyret-parley-vscode
+(https://github.com/jpolitz/pyret-parley-vscode),
+licensed under the Apache License, Version 2.0.
+
+Modifications and additions:
+Copyright 2024-2025 Jayret contributors.
+
+------------------------------------------------------------
+Non-affiliation disclaimer
+------------------------------------------------------------
+This project (Jayret) is an independent derivative work. It is
+NOT affiliated with, endorsed by, or sponsored by the Pyret
+project, Brown PLT, or the original authors of the upstream
+work named above. "Pyret" is used here solely to describe the
+origin of this software, as permitted by section 6 of the
+Apache License, Version 2.0.

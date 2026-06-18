@@ -1,5 +1,12 @@
 # jayret-parley-vscode
 
+> **Notice.** This is an independent derivative of
+> [pyret-parley-vscode](https://github.com/jpolitz/pyret-parley-vscode), originally by
+> Joe Politz (with grammar/language-configuration by Seth Poulsen), used under the Apache License 2.0.
+> It is **not affiliated with, endorsed by, or sponsored by**
+> the Pyret project, Brown PLT, or the original authors.
+> See [`NOTICE`](./NOTICE) for full attribution.
+
 An interactive Visual Studio Code editor for [Jayret](https://github.com/jayret-lang/jayret-lang),
 modeled on [jpolitz/pyret-parley-vscode](https://github.com/jpolitz/pyret-parley-vscode)
 and powered by a Jayret-flavored
